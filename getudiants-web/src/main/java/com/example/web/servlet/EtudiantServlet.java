@@ -33,6 +33,43 @@ public class EtudiantServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            String action = request.getParameter("action");
+            if (action != null) {
+                switch (action) {
+                        case "edit":
+                            String editIdParam = request.getParameter("id");
+                            if (editIdParam == null || editIdParam.trim().isEmpty()) {
+                                // missing id -> redirect to list
+                                response.sendRedirect(request.getContextPath() + "/etudiants");
+                                return;
+                            }
+                            Integer editId = Integer.parseInt(editIdParam);
+                            Etudiant etudiantToEdit = etudiantBean.find(editId);
+                            request.setAttribute("etudiant", etudiantToEdit);
+                            request.getRequestDispatcher("/WEB-INF/jsp/edit-etudiant.jsp").forward(request, response);
+                            return;
+                        case "delete":
+                            String deleteIdParam = request.getParameter("id");
+                            if (deleteIdParam == null || deleteIdParam.trim().isEmpty()) {
+                                response.sendRedirect(request.getContextPath() + "/etudiants");
+                                return;
+                            }
+                            try {
+                                Integer deleteId = Integer.parseInt(deleteIdParam);
+                                etudiantBean.delete(deleteId);
+                                response.sendRedirect(request.getContextPath() + "/etudiants");
+                            } catch (Exception e) {
+                                request.setAttribute("errorMessage", 
+                                    "Impossible de supprimer cet étudiant car il a des suivis associés. " +
+                                    "Veuillez d'abord supprimer ses suivis.");
+                                List<Etudiant> etudiants = etudiantBean.findAll();
+                                request.setAttribute("etudiants", etudiants);
+                                request.getRequestDispatcher("/WEB-INF/jsp/etudiants.jsp").forward(request, response);
+                            }
+                            return;
+                }
+            }
+
             List<Etudiant> etudiants = etudiantBean.findAll();
             request.setAttribute("etudiants", etudiants);
             request.getRequestDispatcher("/WEB-INF/jsp/etudiants.jsp").forward(request, response);
@@ -44,14 +81,31 @@ public class EtudiantServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String action = request.getParameter("action");
         String nom = request.getParameter("nom");
         String prenom = request.getParameter("prenom");
         String cne = request.getParameter("cne");
         String adresse = request.getParameter("adresse");
         String niveau = request.getParameter("niveau");
 
-        Etudiant etudiant = new Etudiant(nom, prenom, cne, adresse, niveau);
-        etudiantBean.create(etudiant);
+        if ("update".equals(action)) {
+            String idParam = request.getParameter("id");
+            if (idParam == null || idParam.trim().isEmpty()) {
+                response.sendRedirect(request.getContextPath() + "/etudiants");
+                return;
+            }
+            Integer id = Integer.parseInt(idParam);
+            Etudiant existingEtudiant = etudiantBean.find(id);
+            existingEtudiant.setNom(nom);
+            existingEtudiant.setPrenom(prenom);
+            existingEtudiant.setCne(cne);
+            existingEtudiant.setAdresse(adresse);
+            existingEtudiant.setNiveau(niveau);
+            etudiantBean.update(existingEtudiant);
+        } else {
+            Etudiant etudiant = new Etudiant(nom, prenom, cne, adresse, niveau);
+            etudiantBean.create(etudiant);
+        }
 
         response.sendRedirect(request.getContextPath() + "/etudiants");
     }

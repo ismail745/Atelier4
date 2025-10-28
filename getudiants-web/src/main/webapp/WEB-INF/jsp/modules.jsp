@@ -29,17 +29,21 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Libellé</th>
                     <th>Code</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <c:forEach items="${modules}" var="module">
                     <tr>
-                        <td>${module.idModule}</td>
                         <td>${module.libelle}</td>
                         <td>${module.code}</td>
+                        <td>
+                                     <a href="modules?action=edit&id=${module.idModule}" class="btn btn-warning btn-sm">Modifier</a>
+                                     <a href="modules?action=delete&id=${module.idModule}" class="btn btn-danger btn-sm"
+                               onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce module ?')">Supprimer</a>
+                        </td>
                     </tr>
                 </c:forEach>
             </tbody>

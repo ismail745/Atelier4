@@ -46,21 +46,25 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Étudiant</th>
                     <th>Module</th>
                     <th>Note</th>
                     <th>Date</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <c:forEach items="${suivies}" var="suivie">
                     <tr>
-                        <td>${suivie.idSuivie}</td>
                         <td>${suivie.etudiant.nom} ${suivie.etudiant.prenom}</td>
                         <td>${suivie.module.libelle}</td>
                         <td>${suivie.note}</td>
                         <td><fmt:formatDate value="${suivie.dateSuivie}" pattern="dd/MM/yyyy"/></td>
+                        <td>
+                                     <a href="suivies?action=edit&id=${suivie.idSuivie}" class="btn btn-warning btn-sm">Modifier</a>
+                                     <a href="suivies?action=delete&id=${suivie.idSuivie}" class="btn btn-danger btn-sm"
+                                         onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce suivi ?')">Supprimer</a>
+                        </td>
                     </tr>
                 </c:forEach>
             </tbody>
