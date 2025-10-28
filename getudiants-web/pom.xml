@@ -34,7 +34,8 @@
             <artifactId>getudiants-ejb</artifactId>
             <version>1.0-SNAPSHOT</version>
             <type>ejb-client</type>
-            <scope>provided</scope>
+            <!-- needed in the WAR so the remote interface is available to the webapp -->
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

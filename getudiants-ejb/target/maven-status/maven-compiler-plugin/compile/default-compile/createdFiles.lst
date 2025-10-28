@@ -1,9 +1,9 @@
 com\example\ejb\remote\EtudiantRemote.class
 com\example\ejb\session\ModuleBean.class
 com\example\ejb\model\Etudiant.class
-main\java\com\example\ejb\session\EtudiantBean.class
 com\example\ejb\model\Suivie.class
 com\example\ejb\model\Module.class
 com\example\ejb\remote\SuivieRemote.class
+com\example\ejb\session\EtudiantBean.class
 com\example\ejb\remote\ModuleRemote.class
 com\example\ejb\session\SuivieBean.class

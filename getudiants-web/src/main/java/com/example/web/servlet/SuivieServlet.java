@@ -29,14 +29,16 @@ public class SuivieServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         try {
-            Properties props = new Properties();
-            props.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");
-            props.put(Context.PROVIDER_URL, "http-remoting://localhost:8080");
-            Context ctx = new InitialContext(props);
-            
-            suivieBean = (SuivieRemote) ctx.lookup("ejb:/getudiants-ejb//SuivieBean!com.example.ejb.remote.SuivieRemote");
-            etudiantBean = (EtudiantRemote) ctx.lookup("ejb:/getudiants-ejb//EtudiantBean!com.example.ejb.remote.EtudiantRemote");
-            moduleBean = (ModuleRemote) ctx.lookup("ejb:/getudiants-ejb//ModuleBean!com.example.ejb.remote.ModuleRemote");
+            Context ctx = new InitialContext();
+            suivieBean = (SuivieRemote) ctx.lookup(
+                "java:global/getudiants-ejb-1.0-SNAPSHOT/SuivieBean!com.example.ejb.remote.SuivieRemote"
+            );
+            etudiantBean = (EtudiantRemote) ctx.lookup(
+                "java:global/getudiants-ejb-1.0-SNAPSHOT/EtudiantBean!com.example.ejb.remote.EtudiantRemote"
+            );
+            moduleBean = (ModuleRemote) ctx.lookup(
+                "java:global/getudiants-ejb-1.0-SNAPSHOT/ModuleBean!com.example.ejb.remote.ModuleRemote"
+            );
         } catch (Exception e) {
             throw new ServletException(e);
         }

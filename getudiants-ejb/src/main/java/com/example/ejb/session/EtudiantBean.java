@@ -1,4 +1,4 @@
-package main.java.com.example.ejb.session;
+package com.example.ejb.session;
 
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;

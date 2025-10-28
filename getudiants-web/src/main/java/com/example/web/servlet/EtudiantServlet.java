@@ -1,4 +1,4 @@
-package main.java.com.example.web.servlet;
+package com.example.web.servlet;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,12 +20,10 @@ public class EtudiantServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         try {
-            Properties props = new Properties();
-            props.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");
-            props.put(Context.PROVIDER_URL, "http-remoting://localhost:8080");
-            Context ctx = new InitialContext(props);
-            
-            etudiantBean = (EtudiantRemote) ctx.lookup("ejb:/getudiants-ejb//EtudiantBean!com.example.ejb.remote.EtudiantRemote");
+            Context ctx = new InitialContext();
+            etudiantBean = (EtudiantRemote) ctx.lookup(
+                "java:global/getudiants-ejb-1.0-SNAPSHOT/EtudiantBean!com.example.ejb.remote.EtudiantRemote"
+            );
         } catch (Exception e) {
             throw new ServletException(e);
         }
